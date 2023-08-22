@@ -191,6 +191,21 @@ proxy-groups:
 
 
 #分地区的节点服务器策略分组结束
+
+    - 
+          name: ⏩ Spotify
+          type: select
+          proxies:
+          
+          - 台湾节点
+          - 香港节点
+          - 日本节点
+          - 美国节点
+          - 新加坡节点
+          - 全部地区
+          - 直连
+          - 代理选择
+
     - 
           name: 0️⃣ NETFLIX
           type: select
@@ -427,6 +442,15 @@ proxy-groups:
 
 
 rules:
+    - "DOMAIN-KEYWORD,-spotify-,⏩ Spotify"
+    - "DOMAIN-KEYWORD,spotify.com,⏩ Spotify"
+    - "DOMAIN-KEYWORD,spotify.com,⏩ Spotify"
+    - "DOMAIN-SUFFIX,pscdn.co,⏩ Spotify"
+    - "DOMAIN-SUFFIX,scdn.co,⏩ Spotify"
+    - "DOMAIN-SUFFIX,spoti.fi,⏩ Spotify"
+    - "DOMAIN-SUFFIX,spotify.com,⏩ Spotify"
+    - "DOMAIN-SUFFIX,spotifycdn.com,⏩ Spotify"
+    - "DOMAIN-SUFFIX,spotifycdn.net,⏩ Spotify"
     - "DOMAIN,dy.msclm.net,DIRECT"
     - "DOMAIN,www.ouyicn.life,DIRECT"
     - "DOMAIN,ouyicn.life,DIRECT"
