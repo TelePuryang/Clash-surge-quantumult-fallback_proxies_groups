@@ -442,6 +442,20 @@ proxy-groups:
 
 
 rules:
+#openai
+    - "DOMAIN-SUFFIX,ai.com,代理选择"
+    - "DOMAIN-SUFFIX,auth0.com,代理选择"
+    - "DOMAIN-SUFFIX,challenges.cloudflare.com,代理选择"
+    - "DOMAIN-SUFFIX,client-api.arkoselabs.com,代理选择"
+    - "DOMAIN-SUFFIX,events.statsigapi.net,代理选择"
+    - "DOMAIN-SUFFIX,featuregates.org,代理选择"
+    - "DOMAIN-SUFFIX,identrust.com,代理选择"
+    - "DOMAIN-SUFFIX,intercom.io,代理选择"
+    - "DOMAIN-SUFFIX,intercomcdn.com,代理选择"
+    - "DOMAIN-SUFFIX,poe.com,代理选择"
+    - "DOMAIN-SUFFIX,sentry.io,代理选择"
+    - "DOMAIN-SUFFIX,stripe.com,代理选择"
+    - "DOMAIN-KEYWORD,openai,代理选择"
     - "DOMAIN-KEYWORD,-spotify-,⏩ Spotify"
     - "DOMAIN-KEYWORD,spotify.com,⏩ Spotify"
     - "DOMAIN-KEYWORD,spotify.com,⏩ Spotify"
