@@ -133,7 +133,7 @@ proxy-groups:
       
     - 
           name: ▶️ 自动选择
-          type:  fa'l'l'ba'c'k
+          type:  fallback
           url: "http://www.gstatic.com/generate_204"
           interval: 300
           use:
@@ -182,7 +182,7 @@ proxy-groups:
       
     - 
           name: 全部地区
-          type:  fallback
+          type:  select
           url: http://www.gstatic.com/generate_204
           interval: 300
           use:
