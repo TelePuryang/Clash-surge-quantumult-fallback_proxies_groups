@@ -130,6 +130,8 @@ proxy-groups:
           type: select
           use:
           - 全部地区
+          proxies:
+          - 自动选择
       
     - 
           name: 自动选择
