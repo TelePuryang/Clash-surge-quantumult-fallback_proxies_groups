@@ -14,8 +14,6 @@
 #使用可直接在订阅地址查找替换为自己的订阅地址；
 #订阅地址后的"&flag=clash"不是所有订阅地址都需要；自行测试；
 #配置文件可以自行保存，后期换订阅了可以保留配置文件；
-
-
 mixed-port: 7890
 allow-lan: true
 bind-address: "*"
@@ -40,13 +38,13 @@ dns:
     fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4, 0.0.0.0/32] }
 
 proxy-providers:
-
+    # 从链接导入的配置文件（支持多个Clash 订阅链接）
     台湾地区:
         type: http
         path: ./profiles/proxies/台湾地区.yaml
-        url: 填写订阅地址&flag=clash
+        url: 你的订阅地址
         interval: 3600
-        filter: "台湾" 
+        filter: "台湾" # 筛选出含有该关键词的节点
         health-check:
             enable: true
             url: http://www.gstatic.com/generate_204
@@ -54,9 +52,9 @@ proxy-providers:
     香港地区:
         type: http
         path: ./profiles/proxies/香港地区.yaml
-        url: 填写订阅地址&flag=clash
+        url: 你的订阅地址
         interval: 3600
-        filter: "香港" 
+        filter: "香港" # 筛选出含有该关键词的节点
         health-check:
             enable: true
             url: http://www.gstatic.com/generate_204
@@ -65,9 +63,9 @@ proxy-providers:
     日本地区:
         type: http
         path: ./profiles/proxies/日本地区.yaml
-        url: 填写订阅地址&flag=clash
+        url: 你的订阅地址
         interval: 3600
-        filter: "日本" 
+        filter: "日本" # 筛选出含有该关键词的节点
         health-check:
             enable: true
             url: http://www.gstatic.com/generate_204
@@ -77,9 +75,9 @@ proxy-providers:
     美国地区:
         type: http
         path: ./profiles/proxies/美国地区.yaml
-        url: 填写订阅地址&flag=clash
+        url: 你的订阅地址
         interval: 3600
-        filter: "美国" 
+        filter: "美国" # 筛选出含有该关键词的节点
         health-check:
             enable: true
             url: http://www.gstatic.com/generate_204
@@ -89,9 +87,9 @@ proxy-providers:
     新加坡地区:
         type: http
         path: ./profiles/proxies/新加坡地区.yaml
-        url: 填写订阅地址&flag=clash
+        url: 你的订阅地址
         interval: 3600
-        filter: "新加坡" 
+        filter: "新加坡" # 筛选出含有该关键词的节点
         health-check:
             enable: true
             url: http://www.gstatic.com/generate_204
@@ -100,8 +98,10 @@ proxy-providers:
     全部地区:
         type: http
         path: ./profiles/proxies/全部地区.yaml
-        url: 填写订阅地址&flag=clash
+        url: 你的订阅地址
         interval: 3600
+      #   下面是排除掉含有过期时间、流量统计的过滤器
+      #   filter: "^(?!.*剩余)+^(?!.*到期)+^(?!.*重置)"
         health-check:
             enable: true
             url: http://www.gstatic.com/generate_204
@@ -132,8 +132,8 @@ proxy-groups:
           - 全部地区
       
     - 
-          name: ▶️ 自动选择
-          type:  fallback
+          name: 自动选择
+          type: fallback
           url: "http://www.gstatic.com/generate_204"
           interval: 300
           use:
@@ -142,7 +142,7 @@ proxy-groups:
     #分地区的节点服务器策略组
     - 
           name: 台湾节点
-          type:  fallback
+          type: fallback
           url: http://www.gstatic.com/generate_204
           interval: 300
           use:
@@ -150,7 +150,7 @@ proxy-groups:
       
     - 
           name: 香港节点
-          type:  fallback
+          type: fallback
           url: http://www.gstatic.com/generate_204
           interval: 300
           use:
@@ -158,7 +158,7 @@ proxy-groups:
       
     - 
           name: 日本节点
-          type:  fallback
+          type: fallback
           url: http://www.gstatic.com/generate_204
           interval: 300
           use:
@@ -166,7 +166,7 @@ proxy-groups:
       
     - 
           name: 美国节点
-          type:  fallback
+          type: fallback
           url: http://www.gstatic.com/generate_204
           interval: 300
           use:
@@ -174,7 +174,7 @@ proxy-groups:
       
     - 
           name: 新加坡节点
-          type:  fallback
+          type: fallback
           url: http://www.gstatic.com/generate_204
           interval: 300
           use:
@@ -182,7 +182,7 @@ proxy-groups:
       
     - 
           name: 全部地区
-          type:  select
+          type: select
           url: http://www.gstatic.com/generate_204
           interval: 300
           use:
@@ -191,6 +191,21 @@ proxy-groups:
 
 
 #分地区的节点服务器策略分组结束
+
+# 策略组
+    - 
+          name: ℹ️ 谷歌服务
+          type: select
+          proxies:
+          
+          - 台湾节点
+          - 香港节点
+          - 日本节点
+          - 美国节点
+          - 新加坡节点
+          - 全部地区
+          - 直连
+          - 代理选择
 
     - 
           name: ⏩ Spotify
@@ -205,7 +220,6 @@ proxy-groups:
           - 全部地区
           - 直连
           - 代理选择
-
     - 
           name: 0️⃣ NETFLIX
           type: select
@@ -383,6 +397,7 @@ proxy-groups:
           type: select
           proxies:
           - 直连
+         
       
     - 
           name: 📶 Telegram
@@ -417,7 +432,7 @@ proxy-groups:
           type: select
           proxies:
           - 直连
-      
+
       
 
     - 
@@ -439,23 +454,927 @@ proxy-groups:
 
 
 
-
-
 rules:
-#openai
+
+
+#谷歌
+
+    - DOMAIN-SUFFIX,0emm.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,1e100.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,1ucrs.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,265.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,2mdn-cn.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,2mdn.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,466453.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,abc.xyz, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,accounts.googlers.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,adgoogle.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,admeld.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,admob-cn.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,admob.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,adsense.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,adsensecustomsearchads.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,adsenseformobileapps.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,advertisercommunity.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,advertiserscommunity.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,adwords-community.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,adwords.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,adwordsexpress.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,ai.ytimg.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,amp.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,ampproject.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,ampproject.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,ampproject.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,android.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,androidify.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,androidtv.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,angulardart.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,api.ai, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,apigee.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,app-measurement-cn.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,app-measurement.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,app-measurement.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,appbridge.ca, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,appbridge.io, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,appbridge.it, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,apps5.oingo.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,appspot.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,apture.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,area120.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,asp-cc.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,autodraw.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,avail.googleflights.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,bandpage.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,baselinestudy.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,baselinestudy.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,bazel.build, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,bdn.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,beacons.gvt2.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,beacons2.gvt2.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,beacons3.gvt2.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,beatthatquote.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blink.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blog.google, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogblog.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogger.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.ae, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.al, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.am, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.ba, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.be, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.bg, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.bj, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.ca, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.cf, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.ch, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.cl, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.co.at, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.co.id, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.co.il, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.co.ke, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.co.nz, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.co.uk, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.co.za, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.com.ar, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.com.au, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.com.br, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.com.by, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.com.co, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.com.cy, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.com.ee, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.com.eg, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.com.es, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.com.mt, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.com.ng, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.com.tr, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.com.uy, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.cv, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.cz, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.de, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.dk, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.fi, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.fr, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.gr, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.hk, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.hr, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.hu, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.ie, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.in, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.is, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.it, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.jp, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.kr, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.li, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.lt, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.lu, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.md, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.mk, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.mx, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.my, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.nl, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.no, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.pe, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.pt, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.qa, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.re, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.ro, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.rs, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.ru, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.se, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.sg, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.si, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.sk, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.sn, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.td, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.tw, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.ug, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,blogspot.vn, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,brocaproject.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,brotli.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,bumpshare.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,bumptop.ca, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,bumptop.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,bumptop.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,bumptop.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,bumptunes.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,campuslondon.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,capitalg.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,certificate-transparency.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,certificate-transparency.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,charlestonroadregistry.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,chat.gle, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,chrome.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,chromebook.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,chromecast.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,chromeexperiments.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,chromeos.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,chromercise.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,chromestatus.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,chromium.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,chronicle.security, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,chroniclesec.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,clickserve.cc-dt.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,clickserver.googleads.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,cloudburstresearch.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,cloudfunctions.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,cloudproxy.app, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,cloudrobotics.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,cobrasearch.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,codespot.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,conscrypt.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,conscrypt.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,cookiechoices.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,coova.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,coova.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,coova.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,crashlytics.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,crbug.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,creativelab5.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,crossmediapanel.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,crr.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,crrev.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,cs4hs.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,dart.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,dartlang.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,dartpad.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,dartsearch-cn.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,dartsearch.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,data-vocabulary.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,dataliberation.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,debug.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,debugproject.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,deepmind.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,deja.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,deps.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,deps.info, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,devsitetest.how, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,dialogflow.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,digisfera.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,digitalassetlinks.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,digitalattackmap.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,distribution.qatp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,distribution.qcpp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,distribution.qpdp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,doubleclick-cn.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,doubleclick.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,doubleclick.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,download.qatp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,download.qcpp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,download.qpdp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,episodic.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,fastlane.ci, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,fastlane.tools, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,feedburner.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,fflick.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,financeleadsonline.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,firebase.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,firebase.io, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,firebaseapp.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,firebaseio.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,flutter.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,flutterapp.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,foofle.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,froogle.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,fuchsia.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,g-tun.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,g.cn, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,g.co, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,g.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,g.page, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gateway.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gcp.gvt2.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gcpnode.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gcr.io, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gerritcodereview.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,get.app, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,get.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,get.how, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,get.new, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,get.page, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,get.rsvp, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,getbumptop.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,getmdl.io, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,getoutline.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,ggoogle.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gipscorp.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gkecnapps.cn, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,globaledu.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gmail.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gmodules.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,go-lang.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,go-lang.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,go-lang.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,go.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,godoc.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gogle.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gogole.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,golang.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,golang.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,golang.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gonglchuangl.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gongyichuangyi.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,goo.gl, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googel.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googil.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googl.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google-access.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google-analytics-cn.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google-analytics.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google-syndication.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ad, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ae, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.al, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.am, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.as, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.at, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.az, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ba, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.be, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.berlin, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.bf, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.bg, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.bi, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.bj, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.bs, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.bt, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.by, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ca, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.cat, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.cd, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.cf, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.cg, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ch, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ci, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.cl, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.cm, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.cn, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.ao, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.bw, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.ck, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.cr, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.id, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.il, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.in, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.jp, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.ke, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.kr, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.ls, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.ma, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.mz, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.nz, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.th, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.tz, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.ug, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.uk, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.uz, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.ve, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.vi, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.za, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.zm, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.co.zw, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.af, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.ag, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.ai, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.ar, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.au, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.bd, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.bh, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.bn, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.bo, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.br, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.bz, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.co, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.cu, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.cy, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.do, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.ec, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.eg, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.et, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.fj, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.gh, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.gi, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.gt, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.hk, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.jm, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.kh, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.kw, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.lb, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.ly, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.mm, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.mt, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.mx, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.my, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.na, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.ng, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.ni, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.np, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.om, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.pa, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.pe, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.pg, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.ph, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.pk, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.pr, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.py, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.qa, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.sa, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.sb, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.sg, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.sl, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.sv, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.tj, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.tr, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.tw, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.ua, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.uy, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.vc, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.com.vn, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.cv, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.cz, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.de, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.dj, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.dk, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.dm, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.dz, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ee, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.es, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.fi, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.fm, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.fr, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ga, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ge, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.gg, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.gl, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.gm, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.gr, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.gy, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.hn, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.hr, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ht, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.hu, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ie, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.im, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.iq, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.is, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.it, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.je, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.jo, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.kg, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ki, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.kz, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.la, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.li, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.lk, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.lt, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.lu, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.lv, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.md, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.me, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.mg, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.mk, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ml, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.mn, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ms, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.mu, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.mv, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.mw, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ne, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.nl, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.no, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.nr, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.nu, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.pl, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.pn, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ps, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.pt, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ro, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.rs, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ru, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.rw, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.sc, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.se, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.sh, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.si, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.sk, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.sm, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.sn, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.so, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.sr, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.st, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.td, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.tg, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.tl, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.tm, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.tn, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.to, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.tt, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ventures, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.vg, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.vu, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,google.ws, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleacquisitionmigration.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleadapis.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleadservices-cn.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleadservices.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleanalytics.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleapis-cn.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleapis.cn, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleapis.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleapps-cn.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleapps.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlearth.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleblog.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlebot.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlecapital.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlecert.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlecnapps.cn, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlecode.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlecommerce.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlecompare.co.uk, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googledanmark.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googledomains.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlee.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleearth.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlefiber.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlefiber.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlefinland.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleflights-cn.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlemail.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlemaps.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlemashups.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleoptimize-cn.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleoptimize.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlepagecreator.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlephotos.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleplay.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleplex.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleplus.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlescholar.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlesource.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlestore.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlesverige.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlesyndication-cn.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlesyndication.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googletagmanager-cn.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googletagmanager.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googletagservices-cn.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googletagservices.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googletraveladservices-cn.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googletraveladservices.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlevads-cn.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleventures.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlezip.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googlr.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,goolge.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gooogle.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gridaware.app, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gsrc.io, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gstatic-cn.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gstatic.cn, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gstatic.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gstaticcnapps.cn, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gsuite.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gv.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gvt0.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gvt1-cn.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gvt2-cn.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gvt3.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gvt5.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gvt6.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gvt7.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gvt9.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,gwtproject.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,haplorrhini.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,hdrplusdata.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,hey.boo, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,hey.gle, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,hindiweb.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,howtogetmo.co.uk, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,html5rocks.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,hwgo.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,iam.soy, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,iamremarkable.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,idx.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,igoogle.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,impermium.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,itasoftware.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,j2objc.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,jibemobile.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,kaggle.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,kaggle.io, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,kaggle.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,kaggleusercontent.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,keyhole.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,keytransparency.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,keytransparency.foo, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,keytransparency.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,lanternal.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,like.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,madewithcode.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,material.io, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,mdialog.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,meet.new, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,mfg-inspector.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,mobileview.page, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,monitoring.qatp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,monitoring.qcpp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,monitoring.qpdp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,moodstocks.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,near.by, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,nest.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,neverware.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,new.day, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,nomulus.foo, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,oasisfeng.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,oauthz.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,ok.gle, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,on.here, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,on2.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,onefifteen.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,onefifteen.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,oneworldmanystories.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,opensourceinsight.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,opensourceinsights.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,openthread.io, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,openweave.io, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,orbitera.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,page.link, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,pagespeedmobilizer.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,pageview.mobi, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,panoramio.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,partylikeits1986.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,paxlicense.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,picasa.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,picasaweb.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,picasaweb.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,picasaweb.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,picnik.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,pittpatt.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,pixate.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,pki.goog, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,plus.codes, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,polymer-project.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,polymerproject.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,postini.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,privacysandbox.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,prod-controlbe.floonet.goog, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,prod-databe.floonet.goog, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,prod.databe.floonet.goog, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,projectara.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,projectbaseline.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,publishproxy.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,qagpublic.qatp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,qagpublic.qcpp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,qagpublic.qpdp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,qgadmin.qatp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,qgadmin.qcpp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,qgadmin.qpdp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,qpx.googleflights.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,qualysapi.qatp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,qualysapi.qcpp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,qualysapi.qpdp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,qualysguard.qatp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,qualysguard.qcpp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,qualysguard.qpdp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,questvisual.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,quickoffice.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,quiksee.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,recaptcha.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,redhotlabs.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,redirector.gcpcdn.gvt1.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,redirector.gvt1.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,redirector.offline-maps.gvt1.c, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,redirector.snap.gvt1.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,registry.google, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,revolv.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,ridepenguin.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,run.app, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,savethedate.foo, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,saynow.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,scanservice1.qatp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,scanservice1.qcpp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,scanservice1.qpdp1.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,schema.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,schemer.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,screenwisetrends.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,screenwisetrendspanel.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,shattered.io, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,snapseed.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,solveforx.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,stadia.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,staging-controlbe.floonet.goog, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,staging-databe.floonet.goog, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,staging.databe.floonet.goog, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,stcroixmosquito.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,stcroixmosquitoproject.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,studywatchbyverily.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,studywatchbyverily.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,stxmosquito.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,stxmosquitoproject.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,stxmosquitoproject.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,stxmosquitoproject.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,synergyse.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,teachparentstech.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,telephony.goog, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,tensorflow.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,tfhub.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,thecleversense.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,thegooglestore.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,thinkquarterly.co.uk, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,thinkquarterly.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,thinkwithgoogle.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,tiltbrush.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,txcloud.net, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,txvia.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,unfiltered.news, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,up.corp.goog, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,up.gcp.googlers.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,urchin.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,useplannr.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,usvimosquito.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,usvimosquitoproject.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,v8.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,v8project.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,velostrata.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,verily.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,verilylifesciences.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,verilystudyhub.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,verilystudywatch.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,verilystudywatch.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,wallet.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,waveprotocol.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,waymo.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,waze.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,web.app, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,web.dev, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,webappfieldguide.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,webmproject.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,webpkgcache.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,webrtc.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,weltweitwachsen.de, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,whatbrowser.org, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,widevine.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,withgoogle.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,womenwill.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,womenwill.com.br, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,womenwill.id, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,womenwill.in, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,womenwill.mx, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,www.destinationurl.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,www.pxcc.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,x.company, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,x.team, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,xn--9kr7l.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,xn--9trs65b.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,xn--flw351e.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,xn--ggle-55da.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,xn--gogl-0nd52e.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,xn--gogl-1nd42e.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,xn--ngstr-lra8j.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,xn--p8j9a0d9c9a.xn--q9jyb4c, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,xplr.co, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,zukunftswerkstatt.de, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,zynamics.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googledrive.com, ℹ️ 谷歌服务
+    - DOMAIN-SUFFIX,googleusercontent.com, ℹ️ 谷歌服务
+    - DOMAIN-KEYWORD,appspot, ℹ️ 谷歌服务
+    - DOMAIN-KEYWORD,blogspot, ℹ️ 谷歌服务
+    - DOMAIN-KEYWORD,gmail, ℹ️ 谷歌服务
+    - DOMAIN-KEYWORD,google, ℹ️ 谷歌服务
+    - DOMAIN-KEYWORD,recaptcha, ℹ️ 谷歌服务
+    - IP-CIDR,172.110.32.0/21, ℹ️ 谷歌服务
+    - IP-CIDR,173.194.0.0/16, ℹ️ 谷歌服务
+    - IP-CIDR,216.73.80.0/20, ℹ️ 谷歌服务
+    - IP-CIDR,74.125.0.0/16, ℹ️ 谷歌服务
+    - IP-CIDR6,2620:120:e000::/40, ℹ️ 谷歌服务
+    - PROCESS-NAME,GoogleDriveFS.exe, ℹ️ 谷歌服务
+    - PROCESS-NAME,com.android.vending, ℹ️ 谷歌服务
+    - PROCESS-NAME,com.google.android.gms, ℹ️ 谷歌服务
+    - PROCESS-NAME,com.google.android.gsf, ℹ️ 谷歌服务
+    - PROCESS-NAME,com.google.android.play.games, ℹ️ 谷歌服务
+    - PROCESS-NAME,BackupandSync, ℹ️ 谷歌服务
+# 完善国外全球的规则2023.9.5
+    - DOMAIN-KEYWORD,amazon,代理选择
+    - DOMAIN-KEYWORD,avoddashs,代理选择
+    - DOMAIN-KEYWORD,bbcfmt,代理选择
+    - DOMAIN-KEYWORD,jav,代理选择
+    - DOMAIN-KEYWORD,pinterest,代理选择
+    - DOMAIN-KEYWORD,twimg,代理选择
+    - DOMAIN-KEYWORD,voddazn,代理选择
+    - DOMAIN-KEYWORD,wikileaks,代理选择
+    - DOMAIN-KEYWORD,1drv,代理选择
+    - DOMAIN-KEYWORD,1e100,代理选择
+    - DOMAIN-KEYWORD,abema,代理选择
+    - DOMAIN-KEYWORD,appledaily,代理选择
+    - DOMAIN-KEYWORD,avtb,代理选择
+    - DOMAIN-KEYWORD,beetalk,代理选择
+    - DOMAIN-KEYWORD,blogspot,代理选择
+    - DOMAIN-KEYWORD,dlercloud,代理选择
+    - DOMAIN-KEYWORD,dropbox,代理选择
+    - DOMAIN-KEYWORD,duolingo,代理选择
+    - DOMAIN-KEYWORD,facebook,代理选择
+    - DOMAIN-KEYWORD,fbcdn,代理选择
+    - DOMAIN-KEYWORD,github,代理选择
+    - DOMAIN-KEYWORD,gmail,代理选择
+    - DOMAIN-KEYWORD,google,代理选择
+    - DOMAIN-KEYWORD,instagram,代理选择
+    - DOMAIN-KEYWORD,musical.ly,代理选择
+    - DOMAIN-KEYWORD,onedrive,代理选择
+    - DOMAIN-KEYWORD,paypal,代理选择
+    - DOMAIN-KEYWORD,porn,代理选择
+    - DOMAIN-KEYWORD,sci-hub,代理选择
+    - DOMAIN-KEYWORD,skydrive,代理选择
+    - DOMAIN-KEYWORD,spotify,代理选择
+    - DOMAIN-KEYWORD,telegram,代理选择
+    - DOMAIN-KEYWORD,tiktok,代理选择
+    - DOMAIN-KEYWORD,ttvnw,代理选择
+    - DOMAIN-KEYWORD,twitter,代理选择
+    - DOMAIN-KEYWORD,uk-live,代理选择
+    - DOMAIN-KEYWORD,whatsapp,代理选择
+    - DOMAIN-KEYWORD,youtube,代理选择
+    - IP-CIDR,1.201.0.0/24,代理选择
+    - IP-CIDR,101.32.118.0/23,代理选择
+    - IP-CIDR,101.32.96.0/20,代理选择
+    - IP-CIDR,103.2.28.0/22,代理选择
+    - IP-CIDR,103.246.56.0/22,代理选择
+    - IP-CIDR,103.27.148.0/22,代理选择
+    - IP-CIDR,103.4.96.0/22,代理选择
+    - IP-CIDR,108.175.32.0/20,代理选择
+    - IP-CIDR,109.239.140.0/24,代理选择
+    - IP-CIDR,110.76.140.0/22,代理选择
+    - IP-CIDR,113.61.104.0/22,代理选择
+    - IP-CIDR,119.235.224.0/21,代理选择
+    - IP-CIDR,119.235.232.0/23,代理选择
+    - IP-CIDR,119.235.235.0/24,代理选择
+    - IP-CIDR,119.235.236.0/23,代理选择
+    - IP-CIDR,120.232.181.162/32,代理选择
+    - IP-CIDR,120.241.147.226/32,代理选择
+    - IP-CIDR,120.253.253.226/32,代理选择
+    - IP-CIDR,120.253.255.162/32,代理选择
+    - IP-CIDR,120.253.255.34/32,代理选择
+    - IP-CIDR,120.253.255.98/32,代理选择
+    - IP-CIDR,125.209.208.0/20,代理选择
+    - IP-CIDR,125.6.146.0/24,代理选择
+    - IP-CIDR,125.6.149.0/24,代理选择
+    - IP-CIDR,125.6.190.0/24,代理选择
+    - IP-CIDR,129.134.0.0/17,代理选择
+    - IP-CIDR,129.226.0.0/16,代理选择
+    - IP-CIDR,13.32.0.0/15,代理选择
+    - IP-CIDR,13.35.0.0/17,代理选择
+    - IP-CIDR,14.102.250.18/31,代理选择
+    - IP-CIDR,147.92.128.0/17,代理选择
+    - IP-CIDR,149.154.160.0/20,代理选择
+    - IP-CIDR,157.240.0.0/17,代理选择
+    - IP-CIDR,158.85.224.160/27,代理选择
+    - IP-CIDR,158.85.46.128/27,代理选择
+    - IP-CIDR,158.85.5.192/27,代理选择
+    - IP-CIDR,169.45.248.118/32,代理选择
+    - IP-CIDR,173.192.222.160/27,代理选择
+    - IP-CIDR,173.192.231.32/27,代理选择
+    - IP-CIDR,173.194.0.0/16,代理选择
+    - IP-CIDR,173.252.64.0/18,代理选择
+    - IP-CIDR,174.142.105.153/32,代理选择
+    - IP-CIDR,174.37.0.0/16,代理选择
+    - IP-CIDR,179.60.192.0/22,代理选择
+    - IP-CIDR,18.184.0.0/15,代理选择
+    - IP-CIDR,18.194.0.0/15,代理选择
+    - IP-CIDR,18.208.0.0/13,代理选择
+    - IP-CIDR,18.232.0.0/14,代理选择
+    - IP-CIDR,180.163.150.162/32,代理选择
+    - IP-CIDR,180.163.150.34/32,代理选择
+    - IP-CIDR,180.163.151.162/32,代理选择
+    - IP-CIDR,180.163.151.34/32,代理选择
+    - IP-CIDR,184.173.128.0/17,代理选择
+    - IP-CIDR,185.60.216.0/22,代理选择
+    - IP-CIDR,185.76.151.0/24,代理选择
+    - IP-CIDR,192.173.64.0/18,代理选择
+    - IP-CIDR,198.38.96.0/19,代理选择
+    - IP-CIDR,198.45.48.0/20,代理选择
+    - IP-CIDR,203.104.103.0/24,代理选择
+    - IP-CIDR,203.104.128.0/19,代理选择
+    - IP-CIDR,203.174.66.64/26,代理选择
+    - IP-CIDR,203.174.77.0/24,代理选择
+    - IP-CIDR,203.208.39.0/24,代理选择
+    - IP-CIDR,203.208.40.0/23,代理选择
+    - IP-CIDR,203.208.43.0/24,代理选择
+    - IP-CIDR,203.208.50.0/24,代理选择
+    - IP-CIDR,204.15.20.0/22,代理选择
+    - IP-CIDR,208.43.0.0/16,代理选择
+    - IP-CIDR,220.181.174.162/32,代理选择
+    - IP-CIDR,220.181.174.226/32,代理选择
+    - IP-CIDR,220.181.174.34/32,代理选择
+    - IP-CIDR,23.246.0.0/18,代理选择
+    - IP-CIDR,27.0.236.0/22,代理选择
+    - IP-CIDR,3.123.36.126/32,代理选择
+    - IP-CIDR,31.13.24.0/21,代理选择
+    - IP-CIDR,31.13.64.0/18,代理选择
+    - IP-CIDR,34.224.0.0/12,代理选择
+    - IP-CIDR,35.157.215.84/32,代理选择
+    - IP-CIDR,35.157.217.255/32,代理选择
+    - IP-CIDR,37.77.184.0/21,代理选择
+    - IP-CIDR,45.57.0.0/17,代理选择
+    - IP-CIDR,45.64.40.0/22,代理选择
+    - IP-CIDR,50.22.198.204/30,代理选择
+    - IP-CIDR,52.200.0.0/13,代理选择
+    - IP-CIDR,52.58.0.0/15,代理选择
+    - IP-CIDR,52.74.0.0/16,代理选择
+    - IP-CIDR,52.77.0.0/16,代理选择
+    - IP-CIDR,52.84.0.0/15,代理选择
+    - IP-CIDR,54.156.0.0/14,代理选择
+    - IP-CIDR,54.162.243.80/32,代理选择
+    - IP-CIDR,54.173.34.141/32,代理选择
+    - IP-CIDR,54.226.0.0/15,代理选择
+    - IP-CIDR,54.230.156.0/22,代理选择
+    - IP-CIDR,54.235.23.242/32,代理选择
+    - IP-CIDR,54.242.0.0/15,代理选择
+    - IP-CIDR,54.93.0.0/16,代理选择
+    - IP-CIDR,64.120.128.0/17,代理选择
+    - IP-CIDR,66.197.128.0/17,代理选择
+    - IP-CIDR,66.220.144.0/20,代理选择
+    - IP-CIDR,67.220.91.15/32,代理选择
+    - IP-CIDR,67.220.91.18/32,代理选择
+    - IP-CIDR,67.220.91.23/32,代理选择
+    - IP-CIDR,69.171.224.0/19,代理选择
+    - IP-CIDR,69.63.176.0/20,代理选择
+    - IP-CIDR,69.65.19.160/32,代理选择
+    - IP-CIDR,72.52.81.22/32,代理选择
+    - IP-CIDR,74.119.76.0/22,代理选择
+    - IP-CIDR,74.125.0.0/16,代理选择
+    - IP-CIDR,74.86.0.0/16,代理选择
+    - IP-CIDR,75.126.0.0/16,代理选择
+    - IP-CIDR,91.105.192.0/23,代理选择
+    - IP-CIDR,91.108.0.0/16,代理选择
+    - IP-CIDR6,2001:67c:4e8::/48,代理选择
+    - IP-CIDR6,2001:b28:f23c::/47,代理选择
+    - IP-CIDR6,2001:b28:f23f::/48,代理选择
+    - IP-CIDR6,2a0a:f280::/32,代理选择
+    - PROCESS-NAME,LookupViewService,代理选择
+
+ #openai
+   
     - "DOMAIN-SUFFIX,ai.com,代理选择"
     - "DOMAIN-SUFFIX,auth0.com,代理选择"
     - "DOMAIN-SUFFIX,challenges.cloudflare.com,代理选择"
     - "DOMAIN-SUFFIX,client-api.arkoselabs.com,代理选择"
     - "DOMAIN-SUFFIX,events.statsigapi.net,代理选择"
     - "DOMAIN-SUFFIX,featuregates.org,代理选择"
-    - "DOMAIN-SUFFIX,identrust.com,代理选择"
-    - "DOMAIN-SUFFIX,intercom.io,代理选择"
-    - "DOMAIN-SUFFIX,intercomcdn.com,代理选择"
-    - "DOMAIN-SUFFIX,poe.com,代理选择"
-    - "DOMAIN-SUFFIX,sentry.io,代理选择"
-    - "DOMAIN-SUFFIX,stripe.com,代理选择"
-    - "DOMAIN-KEYWORD,openai,代理选择"
+    - DOMAIN-SUFFIX,identrust.com,代理选择
+    - DOMAIN-SUFFIX,intercom.io,代理选择
+    - DOMAIN-SUFFIX,intercomcdn.com,代理选择
+    - DOMAIN-SUFFIX,poe.com,代理选择
+    - DOMAIN-SUFFIX,sentry.io,代理选择
+    - DOMAIN-SUFFIX,stripe.com,代理选择
+    - DOMAIN-KEYWORD,openai,代理选择
+
+#spotify
+
+   
     - "DOMAIN-KEYWORD,-spotify-,⏩ Spotify"
     - "DOMAIN-KEYWORD,spotify.com,⏩ Spotify"
     - "DOMAIN-KEYWORD,spotify.com,⏩ Spotify"
