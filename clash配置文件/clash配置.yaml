@@ -14,6 +14,10 @@
 #使用可直接在订阅地址查找替换为自己的订阅地址；
 #订阅地址后的"&flag=clash"不是所有订阅地址都需要；自行测试；
 #配置文件可以自行保存，后期换订阅了可以保留配置文件；
+
+#########################
+address: 在此添加你的订阅地址
+##########################
 mixed-port: 7890
 allow-lan: true
 bind-address: "*"
@@ -42,7 +46,7 @@ proxy-providers:
     台湾地区:
         type: http
         path: ./profiles/proxies/台湾地区.yaml
-        url: 你的订阅地址
+        url: ${address}
         interval: 3600
         filter: "台湾" # 筛选出含有该关键词的节点
         health-check:
@@ -52,7 +56,7 @@ proxy-providers:
     香港地区:
         type: http
         path: ./profiles/proxies/香港地区.yaml
-        url: 你的订阅地址
+        url: ${address}
         interval: 3600
         filter: "香港" # 筛选出含有该关键词的节点
         health-check:
@@ -63,7 +67,7 @@ proxy-providers:
     日本地区:
         type: http
         path: ./profiles/proxies/日本地区.yaml
-        url: 你的订阅地址
+        url: ${address}
         interval: 3600
         filter: "日本" # 筛选出含有该关键词的节点
         health-check:
@@ -75,7 +79,7 @@ proxy-providers:
     美国地区:
         type: http
         path: ./profiles/proxies/美国地区.yaml
-        url: 你的订阅地址
+        url: ${address}
         interval: 3600
         filter: "美国" # 筛选出含有该关键词的节点
         health-check:
@@ -87,7 +91,7 @@ proxy-providers:
     新加坡地区:
         type: http
         path: ./profiles/proxies/新加坡地区.yaml
-        url: 你的订阅地址
+        url: ${address}
         interval: 3600
         filter: "新加坡" # 筛选出含有该关键词的节点
         health-check:
@@ -98,7 +102,7 @@ proxy-providers:
     全部地区:
         type: http
         path: ./profiles/proxies/全部地区.yaml
-        url: 你的订阅地址
+        url: ${address}
         interval: 3600
       #   下面是排除掉含有过期时间、流量统计的过滤器
       #   filter: "^(?!.*剩余)+^(?!.*到期)+^(?!.*重置)"
